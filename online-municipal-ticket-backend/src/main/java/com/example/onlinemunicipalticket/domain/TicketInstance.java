@@ -22,9 +22,8 @@ public class TicketInstance {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Ticket ticket;
 
-    @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private User user;
+    @ManyToOne(optional = false)
+    private UserData user;
 
     @CreationTimestamp
     private Instant purchaseTimestamp;
@@ -66,6 +65,4 @@ public class TicketInstance {
                     .orElse(false);
         };
     }
-
-
 }
