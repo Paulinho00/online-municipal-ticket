@@ -2,6 +2,7 @@
     
     <li *ngIf="userService.currentSignedUser();" class="nav-item">
         <a class="nav-link" href="#">Kup bilet</a>
+        <a class="nav-link" href="#">Sprawdź bilet</a>
     </li>
     <li *ngIf="userService.currentSignedUser(); else loginBlock" class="nav-item">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{userService.currentSignedUser()?.firstName}}</a>
