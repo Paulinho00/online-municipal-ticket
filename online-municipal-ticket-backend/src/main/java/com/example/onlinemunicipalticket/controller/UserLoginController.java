@@ -2,6 +2,7 @@ package com.example.onlinemunicipalticket.controller;
 
 import com.example.onlinemunicipalticket.domain.SessionData;
 import com.example.onlinemunicipalticket.service.UserService;
+import com.example.onlinemunicipalticket.service.dto.LoginReply;
 import com.example.onlinemunicipalticket.service.dto.RegistrationForm;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -20,13 +21,13 @@ public class UserLoginController {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<Long> login(
+    public ResponseEntity<LoginReply> login(
             @RequestParam String email,
             @RequestParam String password,
             HttpServletRequest request
     ) {
         var token = userService.login(email, password, request.getRemoteAddr());
-        return token.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        return token.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(401).build());
     }
 
     @PostMapping("/logout")
@@ -43,6 +44,6 @@ public class UserLoginController {
 
         return userService.registerAccount(registrationForm) ?
                 ResponseEntity.ok().build()
-                : ResponseEntity.badRequest().body("User with this email already exists");
+                : ResponseEntity.status(409).body("User with this email already exists");
     }
 }

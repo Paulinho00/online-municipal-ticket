@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Data
+@NoArgsConstructor
 @Entity
 public class TicketInstance {
 
@@ -20,26 +22,43 @@ public class TicketInstance {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(
+            name = "ticket_id",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false
+    )
     private Ticket ticket;
 
     @ManyToOne(optional = false)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false
+    )
     private UserData user;
 
     @CreationTimestamp
     private Instant purchaseTimestamp;
 
     @Nullable
-    private Instant useTimestamp;
+    private Instant activationTimestamp;
 
     @Nullable
     private String vehicleId;
 
-    public Optional<Instant> getUseTimestamp() {
-        return Optional.ofNullable(useTimestamp);
+    public TicketInstance(UserData user, Ticket ticket) {
+        this.user = user;
+        this.ticket = ticket;
+    }
+
+    public Optional<Instant> getActivationTimestamp() {
+        return Optional.ofNullable(activationTimestamp);
     }
 
     public boolean isUsed() {
-        return useTimestamp != null || ticket.getTicketType() == TicketType.PERIODIC;
+        return activationTimestamp != null;
     }
 
     public Optional<String> getVehicleId() {
@@ -47,22 +66,24 @@ public class TicketInstance {
     }
 
     public boolean isActive(Instant now, @Nullable String vehicleId) {
-        if (now.isBefore(purchaseTimestamp) || isUsed()) {
+        if (now.isBefore(purchaseTimestamp) || !isUsed()) {
             return false;
         }
 
         return switch (ticket.getTicketType()) {
-            case PERIODIC -> ticket.getDuration()
-                    .map(duration -> now.isBefore(purchaseTimestamp.plus(duration)))
-                    .orElse(false);
             case DISPOSABLE -> getVehicleId()
                     .map(vid -> vid.equals(vehicleId))
                     .orElse(false);
-            case TIMED -> getUseTimestamp()
+            case PERIODIC, TIMED -> getActivationTimestamp()
                     .map(use -> ticket.getDuration().isPresent()
+                            && now.isAfter(use)
                             && now.isBefore(use.plus(ticket.getDuration().get()))
                     )
                     .orElse(false);
         };
+    }
+
+    public Optional<Instant> getExpirationTimestamp() {
+        return getActivationTimestamp().flatMap(use -> ticket.getDuration().map(use::plus));
     }
 }
