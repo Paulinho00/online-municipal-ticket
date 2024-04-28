@@ -1,4 +1,4 @@
-<ul class="nav justify-content-end py-3 navbar-expand-lg bg-dark-subtle">
+<ul class="nav justify-content-end py-3 navbar-expand-lg bg-dark-subtle border border-secondary-subtle">
     
     <li *ngIf="userService.currentSignedUser();" class="nav-item">
         <a class="nav-link" href="#">Kup bilet</a>
@@ -13,7 +13,10 @@
     </li>
     <ng-template #loginBlock>
         <li class="nav-item  me-4">
-            <a class="nav-link" href="#">Zaloguj</a>
+            <a class="nav-link" href="#">Rejestracja</a>
+        </li>
+        <li class="nav-item  me-4">
+            <a class="nav-link" [routerLink] = "['login']">Logowanie</a>
         </li>
     </ng-template>
 </ul>
