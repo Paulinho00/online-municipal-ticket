@@ -1,10 +1,10 @@
 import { TicketType } from "./ticket-type";
 
 export interface Ticket {
-    code: string,
+    id: string,
     type: TicketType,
     purchaseDate: Date,
-    validFrom: Date,
+    activationDate?: Date,
     validUntil: Date,
     isDiscounted: boolean
 }
