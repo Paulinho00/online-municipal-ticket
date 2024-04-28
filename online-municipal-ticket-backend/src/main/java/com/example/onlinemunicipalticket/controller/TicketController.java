@@ -4,8 +4,8 @@ import com.example.onlinemunicipalticket.domain.SessionData;
 import com.example.onlinemunicipalticket.domain.UserRole;
 import com.example.onlinemunicipalticket.service.TicketService;
 import com.example.onlinemunicipalticket.service.UserService;
-import com.example.onlinemunicipalticket.service.dto.Ticket;
 import com.example.onlinemunicipalticket.service.dto.TicketModel;
+import com.example.onlinemunicipalticket.service.dto.TicketPageReply;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.checkTicket(ticketInstanceId, vehicleId));
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<Collection<TicketModel>> getTickets(
             @RequestParam long sessionToken,
             HttpServletRequest request
@@ -55,11 +55,13 @@ public class TicketController {
             return ResponseEntity.status(403).build();
         }
 
-        return ResponseEntity.ok(ticketService.getTickets());
+        return ResponseEntity.ok(ticketService.getAvailableTickets());
     }
 
     @GetMapping("/owned")
-    public ResponseEntity<Collection<Ticket>> getOwnedTickets(
+    public ResponseEntity<TicketPageReply> getOwnedTickets(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam long sessionToken,
             HttpServletRequest request
     ) {
@@ -71,7 +73,7 @@ public class TicketController {
             return ResponseEntity.status(403).build();
         }
 
-        return ResponseEntity.ok(ticketService.getTickets(userData.get().getId()));
+        return ResponseEntity.ok(ticketService.getOwnedTickets(userData.get().getId(), page, size));
     }
 
 

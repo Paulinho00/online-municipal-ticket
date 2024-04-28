@@ -5,23 +5,22 @@ import com.example.onlinemunicipalticket.domain.TicketType;
 import com.example.onlinemunicipalticket.domain.UserData;
 import com.example.onlinemunicipalticket.repository.TicketInstanceRepository;
 import com.example.onlinemunicipalticket.repository.TicketRepository;
-import com.example.onlinemunicipalticket.service.dto.Ticket;
-import com.example.onlinemunicipalticket.service.dto.TicketFactory;
+import com.example.onlinemunicipalticket.service.dto.TicketPageReplyFactory;
 import com.example.onlinemunicipalticket.service.dto.TicketModel;
+import com.example.onlinemunicipalticket.service.dto.TicketPageReply;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TicketService {
 
-    private final UserService userService;
     private final TicketInstanceRepository ticketInstanceRepository;
     private final TicketRepository ticketRepository;
 
@@ -33,7 +32,7 @@ public class TicketService {
                 )).orElse(false);
     }
 
-    public Collection<TicketModel> getTickets() {
+    public Collection<TicketModel> getAvailableTickets() {
         return ticketRepository.findAll().stream()
                 .map(ticket -> new TicketModel(
                         ticket.getId(),
@@ -44,17 +43,12 @@ public class TicketService {
                 )).toList();
     }
 
-    public Collection<Ticket> getTickets(long userId) {
-        return ticketInstanceRepository.findByUserId(userId).stream()
-                .map(TicketFactory::createTicket)
-                .sorted(Comparator.comparing(Ticket::type)
-                        .thenComparing(
-                                ticket -> ticket.activationTimestamp() != null ?
-                                        ticket.activationTimestamp()
-                                        : ticket.purchaseTimestamp(),
-                                Comparator.nullsLast(Comparator.reverseOrder())
-                        )
-                ).toList();
+    public TicketPageReply getOwnedTickets(long userId, int page, int size) {
+        return TicketPageReplyFactory.create(
+                ticketInstanceRepository.findByUserIdOrderByPurchaseTimestampDesc(
+                        userId,
+                        PageRequest.of(page, size)
+                ));
     }
 
     public Optional<Long> buyTicket(long ticketId, UserData user, @Nullable Instant activeFrom) {
