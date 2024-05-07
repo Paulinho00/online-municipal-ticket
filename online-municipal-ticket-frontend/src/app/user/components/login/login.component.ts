@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { response } from 'express';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +15,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class LoginComponent {
   readonly loginForm: FormGroup
   
-  constructor(){
+  constructor(private readonly authService: AuthService, 
+    private readonly userService: UserService, 
+    private readonly router: Router){
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
@@ -19,6 +25,14 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    // implement log in
+    if(this.loginForm.valid){
+      this.userService.login(this.loginForm.value)
+        .subscribe((response) => {
+          console.log('response', response)
+          localStorage.setItem('token', response.token)
+          this.authService.currentSignedUser.set(response)
+          this.router.navigateByUrl('/ticket-list')
+        });
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { UserService } from '../user/services/user.service';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../user/services/auth.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -11,5 +11,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './top-bar.component.scss'
 })
 export class TopBarComponent {
-  constructor(public readonly userService:UserService ){}
+  constructor(public readonly authService:AuthService ){}
 }
