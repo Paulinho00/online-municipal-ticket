@@ -40,8 +40,6 @@ public class UserLoginController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegistrationForm registrationForm) {
-        userService.registerAccount(registrationForm);
-
         return userService.registerAccount(registrationForm) ?
                 ResponseEntity.ok().build()
                 : ResponseEntity.status(409).body("User with this email already exists");
