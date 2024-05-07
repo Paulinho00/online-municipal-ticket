@@ -4,7 +4,7 @@ import { LoginData } from '../model/login-data';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const authApiPrefix = 'http://localhost:8080/login'
+const authApiPrefix = '/api/login'
 @Injectable({
   providedIn: 'root'
 })
