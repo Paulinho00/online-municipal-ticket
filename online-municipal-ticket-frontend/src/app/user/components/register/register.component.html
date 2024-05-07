@@ -1,0 +1,62 @@
+<div class="card mt-4">
+    <div class="card-body">
+      <h3 class="card-title mb-4">Rejestracja</h3>
+      <section class="row">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()"  class="col-5">
+            <div class="form-group">
+                <h5 class="card-subtitle mb-2">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+                </h5>
+            </div>
+            <div class="form-group">
+                <h5 class="card-subtitle mb-2">
+                <label for="firstName">Imię:</label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName">
+                </h5>
+            </div>
+            <div class="form-group">
+                <h5 class="card-subtitle mb-2">
+                <label for="lastName">Nazwisko:</label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName">
+                </h5>
+            </div>
+            <div class="form-group">
+                <h5 class="card-subtitle mb-2">
+                <label for="password">Hasło:</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
+                </h5>
+            </div>
+            <div class="text-red-400 text-sm mb-3" *ngIf="passwordFormField?.dirty">
+                <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('^(?=.*[A-Z])')}">
+                    Musi zawierać conajmniej jedną dużą literę.
+                </span>
+                <br/>
+                <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[a-z])')}">
+                    Musi zawierać conajmniej jedną małą literę
+                </span>
+                <br/>
+                <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(.*[0-9].*)')}">
+                    Musi zawierać conajmniej jedną cyfrę
+                </span>
+                <br/>    
+                <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('(?=.*[!@#$%^&*])')}">
+                    Musi zawierać conajmniej jeden znak specjalny
+                </span>
+                <br/>    
+                <span class="block" [ngClass]="{'text-primary': passwordFormField?.value?.match('.{8,}')}">
+                    Musi mieć conajmniej 8 znaków
+                </span>
+             </div>  
+            <div class="form-group">
+                <h5 class="card-subtitle mb-2">
+                <label for="confirmPassword">Powtórz hasło:</label>
+                <input type="confirmPassword" class="form-control" id="confirmPassword" formControlName="confirmPassword">
+                </h5>
+            </div>
+            <button type="submit" class="mt-3 btn btn-secondary">Zarejestruj</button>
+        </form>
+       </section>
+       
+    </div>
+  </div>
