@@ -5,7 +5,7 @@
         <a class="nav-link" href="#">Sprawdź bilet</a>
     </li>
     <li *ngIf="authService.currentSignedUser(); else loginBlock" class="nav-item">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{authService.currentSignedUser()?.firstName}}</a>
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{authService.currentSignedUser()?.name}}</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item">Moje konto</a></li>
           <li><a class="dropdown-item">Moje bilety</a></li>

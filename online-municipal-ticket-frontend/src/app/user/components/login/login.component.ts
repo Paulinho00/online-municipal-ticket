@@ -31,7 +31,7 @@ export class LoginComponent {
           console.log('response', response)
           localStorage.setItem('token', response.token)
           this.authService.currentSignedUser.set(response)
-          this.router.navigateByUrl('/ticket-list')
+          this.router.navigateByUrl('ticket-list');
         });
     }
   }
