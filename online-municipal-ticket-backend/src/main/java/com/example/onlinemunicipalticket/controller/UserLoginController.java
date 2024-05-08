@@ -2,8 +2,10 @@ package com.example.onlinemunicipalticket.controller;
 
 import com.example.onlinemunicipalticket.domain.SessionData;
 import com.example.onlinemunicipalticket.service.UserService;
+import com.example.onlinemunicipalticket.service.dto.AuthRequest;
 import com.example.onlinemunicipalticket.service.dto.LoginReply;
 import com.example.onlinemunicipalticket.service.dto.RegistrationForm;
+import com.example.onlinemunicipalticket.service.dto.SessionContext;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +24,22 @@ public class UserLoginController {
 
     @PostMapping()
     public ResponseEntity<LoginReply> login(
-            @RequestParam String email,
-            @RequestParam String password,
+            @Valid @RequestBody AuthRequest body,
             HttpServletRequest request
     ) {
-        var token = userService.login(email, password, request.getRemoteAddr());
+        var token = userService.login(
+                body.email(), body.password(),
+                request.getRemoteAddr()
+        );
         return token.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(401).build());
     }
 
     @PostMapping("/logout")
     public void logout(
-            @RequestParam Long token,
+            @RequestBody SessionContext ctx,
             HttpServletRequest request
     ) {
-        userService.logout(new SessionData(token, request.getRemoteAddr()));
+        userService.logout(new SessionData(ctx.token(), request.getRemoteAddr()));
     }
 
     @PostMapping("/register")
