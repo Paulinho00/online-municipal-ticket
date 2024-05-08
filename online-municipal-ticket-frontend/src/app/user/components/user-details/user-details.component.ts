@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { User } from '../../model/user';
+import { UserRole } from '../../model/user-role';
 
 @Component({
   selector: 'app-user-details',
@@ -8,5 +11,17 @@ import { Component } from '@angular/core';
   styleUrl: './user-details.component.scss'
 })
 export class UserDetailsComponent {
-  //implement with resolvers
+  user: User;
+  userRole: string;
+
+  constructor(private readonly userService: UserService) {
+    this.user = userService.getUser()!;
+    if(this.user.role == UserRole.Passenger){
+      this.userRole = "Pasażer";
+    }
+    else{
+      this.userRole = "Kontroler "
+    }
+  }
+
 }
