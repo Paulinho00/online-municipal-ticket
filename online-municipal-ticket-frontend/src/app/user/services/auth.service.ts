@@ -10,7 +10,13 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('user') ?? "null") as User;
   }
 
-  setUser(user:User){
+  loginUser(user:User){
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', user.token);
+  }
+
+  logoutUser(){
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 }

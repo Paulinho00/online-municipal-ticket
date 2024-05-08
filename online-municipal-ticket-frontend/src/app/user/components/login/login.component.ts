@@ -28,8 +28,7 @@ export class LoginComponent {
       this.userService.login(this.loginForm.value)
         .subscribe((response) => {
           console.log('response', response);
-          localStorage.setItem('token', response.token);
-          this.authService.setUser(response);
+          this.authService.loginUser(response);
           this.router.navigateByUrl('ticket-list');
         });
     }

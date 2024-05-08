@@ -18,4 +18,8 @@ export class UserService {
   register(user: User): Observable<any>{
     return this.http.post(`${authApiPrefix}/register`, user, {responseType: 'text'});
   }
+
+  logout():Observable<any>{
+    return this.http.post(`${authApiPrefix}/logout`, "");
+  }
 }
