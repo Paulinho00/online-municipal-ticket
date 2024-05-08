@@ -8,14 +8,13 @@ import com.example.onlinemunicipalticket.service.dto.SessionContext;
 import com.example.onlinemunicipalticket.service.dto.TicketBuyRequest;
 import com.example.onlinemunicipalticket.service.dto.TicketModel;
 import com.example.onlinemunicipalticket.service.dto.TicketPageReply;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
 import java.util.Collection;
 
 @RestController
