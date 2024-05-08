@@ -5,7 +5,6 @@ import com.example.onlinemunicipalticket.service.UserService;
 import com.example.onlinemunicipalticket.service.dto.AuthRequest;
 import com.example.onlinemunicipalticket.service.dto.LoginReply;
 import com.example.onlinemunicipalticket.service.dto.RegistrationForm;
-import com.example.onlinemunicipalticket.service.dto.SessionContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -35,10 +34,10 @@ public class UserLoginController {
 
     @PostMapping("/logout")
     public void logout(
-            @RequestBody SessionContext ctx,
+            @RequestHeader String token,
             HttpServletRequest request
     ) {
-        userService.logout(new SessionData(ctx.token(), request.getRemoteAddr()));
+        userService.logout(new SessionData(token, request.getRemoteAddr()));
     }
 
     @PostMapping("/register")

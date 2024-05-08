@@ -35,7 +35,8 @@ public class UserService {
         return Optional.of(new LoginReply(
                 sessionData.token(), user.getId(),
                 user.getName(), user.getLastName(),
-                user.getRole().toString()
+                user.getRole().toString(),
+                user.getEmail()
         ));
     }
 

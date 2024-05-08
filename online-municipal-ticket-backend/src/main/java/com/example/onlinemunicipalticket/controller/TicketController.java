@@ -4,8 +4,6 @@ import com.example.onlinemunicipalticket.domain.SessionData;
 import com.example.onlinemunicipalticket.domain.UserRole;
 import com.example.onlinemunicipalticket.service.TicketService;
 import com.example.onlinemunicipalticket.service.UserService;
-import com.example.onlinemunicipalticket.service.dto.SessionContext;
-import com.example.onlinemunicipalticket.service.dto.TicketBuyRequest;
 import com.example.onlinemunicipalticket.service.dto.TicketModel;
 import com.example.onlinemunicipalticket.service.dto.TicketPageReply;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/ticket")
@@ -27,12 +27,12 @@ public class TicketController {
 
     @GetMapping("/check")
     public ResponseEntity<Boolean> check(
+            @RequestHeader String token,
             @RequestParam long ticketInstanceId,
             @RequestParam(required = false) String vehicleId,
-            @RequestBody SessionContext ctx,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(ctx.token(), request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(new SessionData(token, request.getRemoteAddr()));
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -45,10 +45,10 @@ public class TicketController {
 
     @GetMapping()
     public ResponseEntity<Collection<TicketModel>> getTickets(
-            @RequestBody SessionContext ctx,
+            @RequestHeader String token,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(ctx.token(), request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(new SessionData(token, request.getRemoteAddr()));
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -61,12 +61,12 @@ public class TicketController {
 
     @GetMapping("/owned")
     public ResponseEntity<TicketPageReply> getOwnedTickets(
+            @RequestHeader String token,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestBody SessionContext ctx,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(ctx.token(), request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(new SessionData(token, request.getRemoteAddr()));
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -80,12 +80,13 @@ public class TicketController {
 
     @PostMapping("/buy")
     public ResponseEntity<Long> buy(
+            @RequestHeader String token,
             @RequestParam long ticketId,
-            @RequestBody TicketBuyRequest body,
+            @RequestBody Long activeFrom,
             HttpServletRequest request
     ) {
         var userData = userService.getLoggedUser(
-                new SessionData(body.ctx().token(), request.getRemoteAddr())
+                new SessionData(token, request.getRemoteAddr())
         );
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
@@ -94,8 +95,10 @@ public class TicketController {
             return ResponseEntity.status(403).build();
         }
 
-        return ticketService.buyTicket(ticketId, userData.get(), body.getActiveFrom().orElse(null))
-                .map(ResponseEntity::ok)
+        return ticketService.buyTicket(
+                        ticketId, userData.get(),
+                        Optional.ofNullable(activeFrom).map(Instant::ofEpochSecond).orElse(null)
+                ).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(404).build());
     }
 
