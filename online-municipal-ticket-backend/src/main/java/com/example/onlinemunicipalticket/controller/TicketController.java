@@ -4,6 +4,8 @@ import com.example.onlinemunicipalticket.domain.SessionData;
 import com.example.onlinemunicipalticket.domain.UserRole;
 import com.example.onlinemunicipalticket.service.TicketService;
 import com.example.onlinemunicipalticket.service.UserService;
+import com.example.onlinemunicipalticket.service.dto.SessionContext;
+import com.example.onlinemunicipalticket.service.dto.TicketBuyRequest;
 import com.example.onlinemunicipalticket.service.dto.TicketModel;
 import com.example.onlinemunicipalticket.service.dto.TicketPageReply;
 import lombok.AccessLevel;
@@ -28,10 +30,10 @@ public class TicketController {
     public ResponseEntity<Boolean> check(
             @RequestParam long ticketInstanceId,
             @RequestParam(required = false) String vehicleId,
-            @RequestParam long sessionToken,
+            @RequestBody SessionContext ctx,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(sessionToken, request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(new SessionData(ctx.token(), request.getRemoteAddr()));
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -44,10 +46,10 @@ public class TicketController {
 
     @GetMapping()
     public ResponseEntity<Collection<TicketModel>> getTickets(
-            @RequestParam long sessionToken,
+            @RequestBody SessionContext ctx,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(sessionToken, request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(new SessionData(ctx.token(), request.getRemoteAddr()));
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -62,10 +64,10 @@ public class TicketController {
     public ResponseEntity<TicketPageReply> getOwnedTickets(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam long sessionToken,
+            @RequestBody SessionContext ctx,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(sessionToken, request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(new SessionData(ctx.token(), request.getRemoteAddr()));
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -80,11 +82,12 @@ public class TicketController {
     @PostMapping("/buy")
     public ResponseEntity<Long> buy(
             @RequestParam long ticketId,
-            @RequestParam long sessionToken,
-            @RequestParam(required = false) Long activeFrom,
+            @RequestBody TicketBuyRequest body,
             HttpServletRequest request
     ) {
-        var userData = userService.getLoggedUser(new SessionData(sessionToken, request.getRemoteAddr()));
+        var userData = userService.getLoggedUser(
+                new SessionData(body.ctx().token(), request.getRemoteAddr())
+        );
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
@@ -92,7 +95,7 @@ public class TicketController {
             return ResponseEntity.status(403).build();
         }
 
-        return ticketService.buyTicket(ticketId, userData.get(), Instant.ofEpochSecond(activeFrom))
+        return ticketService.buyTicket(ticketId, userData.get(), body.getActiveFrom().orElse(null))
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(404).build());
     }
