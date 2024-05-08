@@ -1,9 +1,35 @@
 <div class="card mt-4">
     <div class="card-body">
         <h3 class="card-title mb-4">Szczegóły konta</h3>
-        <p class="card-text">Imię: </p>
-        <p class="card-text">Nazwisko: </p>
-        <p class="card-text">Email: </p>
-        <p class="card-text">Typ konta:</p>
+        <div class="d-flex flex-row">
+            <div class="flex-column col-1">
+                <p class="card-text fw-bold">
+                    Imię:
+                </p>
+                <p class="card-text fw-bold">
+                    Nazwisko:
+                </p>
+                <p class="card-text fw-bold">
+                    Email:
+                </p>
+                <p class="card-text fw-bold">
+                    Typ konta
+                </p>
+            </div>
+            <div class="flex-column">
+                <p class="card-text">
+                    {{user.name}} 
+                </p>
+                <p class="card-text">
+                    {{user.lastName}} 
+                </p>
+                <p class="card-text">
+                    {{user.email}} 
+                </p>
+                <p class="card-text">
+                    {{userRole}}
+                </p>
+            </div>
+        </div>
     </div>
 </div>

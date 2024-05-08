@@ -5,6 +5,7 @@ public record LoginReply(
         long userId,
         String name,
         String lastName,
-        String role
+        String role,
+        String email
 ) {
 }

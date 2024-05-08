@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { UserService } from '../user/services/user.service';
 import { NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { UserService } from '../user/services/user.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-top-bar',
@@ -11,5 +12,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './top-bar.component.scss'
 })
 export class TopBarComponent {
-  constructor(public readonly userService:UserService ){}
+  constructor( private readonly router: Router, public readonly userService: UserService ){}
+
+  logOut(){
+    this.userService.logout().subscribe(response => {
+      this.router.navigateByUrl('/login');
+    });
+  }
 }
