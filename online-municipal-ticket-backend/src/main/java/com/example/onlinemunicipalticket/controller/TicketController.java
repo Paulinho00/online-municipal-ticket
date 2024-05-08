@@ -52,7 +52,7 @@ public class TicketController {
         if (userData.isEmpty()) {
             return ResponseEntity.status(401).build();
         }
-        if (userData.get().getRole() != UserRole.TICKET_INSPECTOR) {
+        if (userData.get().getRole() != UserRole.PASSENGER) {
             return ResponseEntity.status(403).build();
         }
 
