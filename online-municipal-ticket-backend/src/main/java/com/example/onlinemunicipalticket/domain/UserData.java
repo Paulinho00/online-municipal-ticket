@@ -11,10 +11,11 @@ import lombok.Setter;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "USER_DATA")
 public class UserData {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private long id;
 
@@ -32,6 +33,7 @@ public class UserData {
     private String password;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     private UserData(String firstName, String lastName, String email, String password, UserRole userRole) {

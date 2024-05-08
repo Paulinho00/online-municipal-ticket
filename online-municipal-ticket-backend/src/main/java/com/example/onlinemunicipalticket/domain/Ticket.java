@@ -13,10 +13,11 @@ import java.util.Optional;
 
 @Data
 @Entity
+@Table
 public class Ticket {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private long id;
 
