@@ -1,13 +1,13 @@
 <ul class="nav justify-content-end py-3 navbar-expand-lg bg-dark-subtle border border-secondary-subtle">
     
-    <li *ngIf="authService.getUser();" class="nav-item">
+    <li *ngIf="userService.getUser();" class="nav-item">
         <a class="nav-link" href="#">Kup bilet</a>
     </li>
-    <li *ngIf="authService.getUser();" class="nav-item">
+    <li *ngIf="userService.getUser();" class="nav-item">
         <a class="nav-link" href="#">Sprawdź bilet</a>
     </li>
-    <li *ngIf="authService.getUser(); else loginBlock" class="nav-item">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{authService.getUser()?.name}}</a>
+    <li *ngIf="userService.getUser(); else loginBlock" class="nav-item">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{userService.getUser()?.name}}</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" [routerLink] = "['user-details']">Moje konto</a></li>
           <li><a class="dropdown-item">Moje bilety</a></li>
