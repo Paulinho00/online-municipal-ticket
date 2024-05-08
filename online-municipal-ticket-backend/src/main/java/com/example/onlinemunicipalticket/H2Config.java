@@ -9,6 +9,6 @@ public class H2Config {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public Server h2TcpConsoleServer() throws java.sql.SQLException {
-        return Server.createTcpServer("-tcp");
+        return Server.createTcpServer("-tcp", "-tcpAllowOthers");
     }
 }
