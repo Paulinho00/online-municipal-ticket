@@ -34,7 +34,7 @@ export class UserService {
   }
 
   logout():Observable<any>{
-    return this.http.post(`${authApiPrefix}/logout`, +this.getToken())
+    return this.http.post(`${authApiPrefix}/logout`, "")
       .pipe(
         map(response => {
           localStorage.removeItem('user');
