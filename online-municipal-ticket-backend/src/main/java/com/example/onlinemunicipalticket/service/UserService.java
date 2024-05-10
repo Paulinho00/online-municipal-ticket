@@ -33,7 +33,7 @@ public class UserService {
         sessionRepository.save(sessionData, user);
 
         return Optional.of(new LoginReply(
-                sessionData.token(), user.getId(),
+                sessionData.token().toString(), user.getId(),
                 user.getName(), user.getLastName(),
                 user.getRole().toString(),
                 user.getEmail()
