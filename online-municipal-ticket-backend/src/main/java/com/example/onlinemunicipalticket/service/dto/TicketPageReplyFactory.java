@@ -4,8 +4,6 @@ import com.example.onlinemunicipalticket.domain.TicketInstance;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Page;
 
-import java.time.Instant;
-
 @UtilityClass
 public class TicketPageReplyFactory {
 
@@ -24,9 +22,9 @@ public class TicketPageReplyFactory {
         return new Ticket(
                 ticket.getId(),
                 ticketModel.getTicketType().name(),
-                ticket.getPurchaseTimestamp().getEpochSecond(),
-                ticket.getActivationTimestamp().map(Instant::getEpochSecond).orElse(null),
-                ticket.getExpirationTimestamp().map(Instant::getEpochSecond).orElse(null),
+                ticket.getPurchaseTimestamp(),
+                ticket.getActivationTimestamp().orElse(null),
+                ticket.getExpirationTimestamp().orElse(null),
                 ticket.getVehicleId().orElse(null)
         );
     }

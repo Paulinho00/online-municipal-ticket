@@ -25,11 +25,11 @@ public class UserLoginController {
             @Valid @RequestBody AuthRequest body,
             HttpServletRequest request
     ) {
-        var token = userService.login(
+        var loginReply = userService.login(
                 body.email(), body.password(),
                 request.getRemoteAddr()
         );
-        return token.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(401).build());
+        return loginReply.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(401).build());
     }
 
     @PostMapping("/logout")
