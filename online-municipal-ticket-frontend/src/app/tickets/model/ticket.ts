@@ -7,4 +7,5 @@ export interface Ticket {
     activationDate?: Date,
     validUntil: Date,
     isDiscounted: boolean
+    vehicleId: string
 }

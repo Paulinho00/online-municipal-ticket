@@ -1,18 +1,29 @@
-<h4>Bilet "TYP BILETU"</h4>
+<h4>Bilet {{ticket.type}} {{ ticket.isDiscounted ? ' - ulgowy' : ''}}</h4>
 <div class="d-flex flex-row">
     <div class="d-flex flex-column col-5">
-        <p class="card-text">Kod: </p>
-        <p class="card-text">Data zakupu: </p>
+        <p class="card-text">Kod: {{ticket.id}}</p>
+        <p class="card-text">Data zakupu: {{ticket.purchaseDate}}</p>
     </div>
     <div class="d-flex flex-column">
         <!--dla jednorazowego-->
-        <p class="card-text">Data skasowania: </p>
-        <p class="card-text">Nr pojazdu: </p>
+        <div *ngIf="ticket.type == TicketType.Disposable">
+            <p class="card-text">Data skasowania: {{ticket.activationDate}}</p>
+            <p class="card-text">Nr pojazdu: {{ticket.vehicleId}}</p>
+        </div>
+
         <!--dla czasowego-->
-        <p class="card-text">Data skasowania: </p>
-        <p class="card-text">Data wygaśnięcia: </p>
+        <div *ngIf="ticket.type == TicketType.Timed">
+            <p class="card-text">Data skasowania: {{ticket.activationDate}}</p>
+            <p class="card-text">Data wygaśnięcia: {{ticket.validUntil}}</p>
+            <p class="card-text">Nr pojazdu: {{ticket.vehicleId}}</p>
+        </div>
+
         <!--dla okresowego-->
-        <p class="card-text">Data rozpoczęcia: </p>
-        <p class="card-text">Data wygaśnięcia: </p>
+        <div *ngIf="ticket.type == TicketType.Periodic">
+            <p class="card-text">Data rozpoczęcia: {{ticket.activationDate}}</p>
+            <p class="card-text">Data wygaśnięcia: {{ticket.activationDate}}</p>
+        </div>
+
+
     </div>
 </div>

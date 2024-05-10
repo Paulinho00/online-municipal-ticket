@@ -10,7 +10,7 @@
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{userService.getUser()?.name}}</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" [routerLink] = "['user-details']">Moje konto</a></li>
-          <li><a class="dropdown-item">Moje bilety</a></li>
+          <li><a class="dropdown-item" [routerLink]="['ticket-list']">Moje bilety</a></li>
           <li><a class="dropdown-item" (click)="logOut()">Wyloguj</a></li>
         </ul>
     </li>
