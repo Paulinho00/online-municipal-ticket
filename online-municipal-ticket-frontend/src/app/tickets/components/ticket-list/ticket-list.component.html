@@ -1,27 +1,23 @@
-<div class="card mt-4">
 
-    <div class="card-body">
-        <div class="d-flex justify-content-center">
-            <nav  aria-label="...">
-                <ul class="pagination">
-                <li *ngIf="hasPreviousPage" class="page-item">
-                    <a class="page-link" tabindex="-1" (click)="changePage(currentPage-1)">Poprzednia</a>
-                </li>
-                <li *ngIf="hasPreviousPage" class="page-item"><a class="page-link disabled">{{currentPage}}</a></li>
-                <li class="page-item active">
-                    <a class="page-link">{{currentPage+1}}</a>
-                </li>
-                <li *ngIf="hasNextPage" class="page-item"><a class="page-link disabled">{{currentPage+2}}</a></li>
-                <li *ngIf="hasNextPage" class="page-item">
-                    <a class="page-link" (click)="changePage(currentPage+1)">Następna</a>
-                </li>
-                </ul>
-            </nav>
-        </div>
-        <hr/>
-        <div class="d-flex flex-column" *ngFor="let ticket of tickets">
-            <app-ticket-details [ticket]="ticket"></app-ticket-details> 
-        </div>
-    </div>
+<div class="d-flex justify-content-center mt-2">
+    <nav  aria-label="...">
+        <ul class="pagination">
+        <li *ngIf="hasPreviousPage" class="page-item">
+            <a class="page-link" tabindex="-1" (click)="changePage(currentPage-1)">Poprzednia</a>
+        </li>
+        <li *ngIf="hasPreviousPage" class="page-item"><a class="page-link disabled">{{currentPage}}</a></li>
+        <li class="page-item active">
+            <a class="page-link">{{currentPage+1}}</a>
+        </li>
+        <li *ngIf="hasNextPage" class="page-item"><a class="page-link disabled">{{currentPage+2}}</a></li>
+        <li *ngIf="hasNextPage" class="page-item">
+            <a class="page-link" (click)="changePage(currentPage+1)">Następna</a>
+        </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="d-flex flex-column" *ngFor="let ticket of tickets">
+    <app-ticket-details [ticket]="ticket"></app-ticket-details> 
 </div>
 
