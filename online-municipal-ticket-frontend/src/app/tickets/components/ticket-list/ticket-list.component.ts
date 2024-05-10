@@ -4,7 +4,7 @@ import { TicketService } from '../../services/ticket.service';
 import { Ticket } from '../../model/ticket';
 import { NgFor, NgIf } from '@angular/common';
 
-const pageSize: number = 1
+const pageSize: number = 2
 
 @Component({
   selector: 'app-ticket-list',

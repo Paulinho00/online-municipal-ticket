@@ -1,5 +1,5 @@
 export enum TicketType {
-    Timed = 'Czasowy',
-    Periodic = 'Okresowy',
-    Disposable = 'Jednorazowy'
+    Timed = "TIMED",
+    Periodic = "PERIODIC",
+    Disposable = "DISPOSABLE"
 }
