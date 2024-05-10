@@ -21,7 +21,7 @@
         <!--dla okresowego-->
         <div *ngIf="ticket.type == TicketType.Periodic">
             <p class="card-text">Data rozpoczęcia: {{ticket.activationDate}}</p>
-            <p class="card-text">Data wygaśnięcia: {{ticket.activationDate}}</p>
+            <p class="card-text">Data wygaśnięcia: {{ticket.validUntil}}</p>
         </div>
 
 

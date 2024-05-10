@@ -22,9 +22,19 @@ export class TicketListComponent implements OnInit{
     constructor(private readonly ticketService: TicketService) {}
 
     ngOnInit(): void {
-      this.ticketService.getTickets(0, pageSize).subscribe((response) => {
-        this.hasNextPage = response.totalPages > 0
-        this.tickets = response.tickets  
+      this.getTicketsForCurrentPage();
+    }
+
+    changePage(page: number): void {
+      this.currentPage = page;
+      this.getTicketsForCurrentPage();
+    }
+
+    private getTicketsForCurrentPage(): void{
+      this.ticketService.getTickets(this.currentPage, pageSize).subscribe((response) => {
+        this.hasNextPage = response.totalPages > 0 && this.currentPage < response.totalPages-1;
+        this.hasPreviousPage = this.currentPage > 0;
+        this.tickets = response.tickets;
       })
     }
 }
