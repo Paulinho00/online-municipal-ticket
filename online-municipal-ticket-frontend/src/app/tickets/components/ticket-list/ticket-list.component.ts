@@ -17,6 +17,7 @@ export class TicketListComponent implements OnInit{
     public currentPage: number = 0
     public hasNextPage: boolean = false
     public hasPreviousPage: boolean = false
+    public isListEmpty: boolean = true;
     public tickets: Ticket[] = []
 
     constructor(private readonly ticketService: TicketService) {}
@@ -33,6 +34,7 @@ export class TicketListComponent implements OnInit{
     private getTicketsForCurrentPage(): void{
       this.ticketService.getTickets(this.currentPage, pageSize).subscribe((response) => {
         this.hasNextPage = response.totalPages > 0 && this.currentPage < response.totalPages-1;
+        this.isListEmpty = response.totalPages == 0;
         this.hasPreviousPage = this.currentPage > 0;
         this.tickets = response.tickets;
       })

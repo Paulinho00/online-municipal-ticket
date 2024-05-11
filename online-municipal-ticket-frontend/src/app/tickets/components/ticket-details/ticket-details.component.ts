@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Ticket } from '../../model/ticket';
-import { NgIf } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { TicketType } from '../../model/ticket-type';
 
 @Component({
@@ -17,7 +17,7 @@ export class TicketDetailsComponent implements OnInit{
   isTimed: boolean = false;
   isDisposable: boolean = false;
 
-  constructor() {
+  constructor(private datePipe: DatePipe) {
 
   }
 
@@ -39,5 +39,9 @@ export class TicketDetailsComponent implements OnInit{
         break;
       }
     }
+  }
+
+  formatDateString(dateTimeString: string): string | null {
+    return this.datePipe.transform(dateTimeString, "dd.MM.yyyy HH:mm");
   }
 }
