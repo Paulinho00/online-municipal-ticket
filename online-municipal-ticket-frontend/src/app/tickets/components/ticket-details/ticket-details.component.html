@@ -1,6 +1,6 @@
 <div class="card mt-4">
     <div class="card-body">
-        <h4>Bilet {{ticketTypeName}} {{ ticket.isDiscounted ? ' - ulgowy' : ''}}</h4>
+        <h4>Bilet {{this.ticketTypePipe.transform(ticket.type) }} {{ ticket.isDiscounted ? ' - ulgowy' : ''}}</h4>
         <div class="d-flex flex-row mt-2">
             <div class="d-flex flex-column col-5">
                 <p class="card-text fw-bold">Kod:</p>
@@ -10,7 +10,7 @@
             </div>
             <div class="d-flex flex-column">
                 <!--dla jednorazowego-->
-                <div *ngIf="isDisposable">
+                <div *ngIf="ticket.type.toString() == 'DISPOSABLE'">
                     <p class="card-text fw-bold">Data skasowania:</p>
                     <p class="card-text"> {{ticket.activationDate ? formatDateString(ticket.activationDate) : 'nieskasowany'}}</p>
                     <p class="card-text fw-bold">Nr pojazdu:</p>
@@ -18,7 +18,7 @@
                 </div>
 
                 <!--dla czasowego-->
-                <div *ngIf="isTimed">
+                <div *ngIf="ticket.type.toString() == 'TIMED'">
                     <p class="card-text fw-bold">Data skasowania:</p>
                     <p class="card-text">{{ticket.activationDate ? formatDateString(ticket.activationDate) : 'nieskasowany'}}</p>
                     <p class="card-text fw-bold">Data wygaśnięcia:</p>
@@ -28,7 +28,7 @@
                 </div>
 
                 <!--dla okresowego-->
-                <div *ngIf="isPeriodic">
+                <div *ngIf="ticket.type.toString() == 'PERIODIC'">
                     <p class="card-text fw-bold">Data rozpoczęcia:</p>
                     <p class="card-text">{{ticket.activationDate?.toLocaleString}}</p>
                     <p class="card-text fw-bold">Data wygaśnięcia:</p>
