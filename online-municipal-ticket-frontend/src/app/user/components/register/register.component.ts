@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -36,11 +37,15 @@ export class RegisterComponent {
   onSubmit(){
       if(this.registerForm.valid){
         this.userService.register(this.registerForm.value)
-          .subscribe((response) => {
-            if(response.status == 409){
-              this.isEmailTaken = true;
+          .subscribe({            
+            next: (response) => {
+              this.router.navigateByUrl('/login');
+            },
+            error: (e) => {
+              if(e.status == 409){
+                this.isEmailTaken = true;
+              }
             }
-            this.router.navigateByUrl('/login');
           });
       }
   }
