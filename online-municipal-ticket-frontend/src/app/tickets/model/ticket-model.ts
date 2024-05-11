@@ -5,5 +5,5 @@ export interface TicketModel {
     type: TicketType,
     durationInSeconds?: number,
     price: number,
-    isDiscounted: boolean
+    isReduced: boolean
 }

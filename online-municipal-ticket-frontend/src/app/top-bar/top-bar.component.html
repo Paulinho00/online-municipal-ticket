@@ -1,7 +1,7 @@
 <ul class="nav justify-content-end py-3 navbar-expand-lg bg-dark-subtle border border-secondary-subtle">
     
     <li *ngIf="userService.getUser();" class="nav-item">
-        <a class="nav-link" href="#">Kup bilet</a>
+        <a class="nav-link" [routerLink]="['ticket-purchase']">Kup bilet</a>
     </li>
     <li *ngIf="userService.getUser();" class="nav-item">
         <a class="nav-link" href="#">Sprawdź bilet</a>
