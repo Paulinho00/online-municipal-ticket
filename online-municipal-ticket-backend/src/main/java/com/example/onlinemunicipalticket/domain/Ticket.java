@@ -26,7 +26,7 @@ public class Ticket {
     private TicketType ticketType;
 
     @Nullable
-    private Duration duration;
+    private Long durationSeconds;
 
     @NotNull
     private BigDecimal price;
@@ -34,10 +34,10 @@ public class Ticket {
     private boolean reduced;
 
     public Optional<Duration> getDuration() {
-        return Optional.ofNullable(duration);
+        return Optional.ofNullable(durationSeconds).map(Duration::ofSeconds);
     }
 
     public Optional<Long> getDurationSeconds() {
-        return Optional.ofNullable(duration).map(Duration::toSeconds);
+        return Optional.ofNullable(durationSeconds);
     }
 }
