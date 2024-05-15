@@ -36,7 +36,7 @@ public class UserData {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    private UserData(String firstName, String lastName, String email, String password, UserRole userRole) {
+    public UserData(String firstName, String lastName, String email, String password, UserRole userRole) {
         this.name = firstName;
         this.lastName = lastName;
         this.email = email;

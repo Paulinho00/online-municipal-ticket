@@ -52,6 +52,10 @@ public class TicketService {
     }
 
     public Optional<Long> buyTicket(long ticketId, UserData user, @Nullable Instant activeFrom) {
+        if (user == null) {
+            return Optional.empty();
+        }
+        
         return ticketRepository.findById(ticketId)
                 .map(ticket -> {
                     var instance = new TicketInstance(
