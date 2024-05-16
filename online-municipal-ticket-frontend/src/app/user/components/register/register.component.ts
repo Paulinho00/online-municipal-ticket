@@ -13,18 +13,18 @@ import { catchError } from 'rxjs';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  readonly registerForm: FormGroup
+  readonly registerForm!: FormGroup
   private strongPasswordRegx: RegExp =
   /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
   public isEmailTaken: boolean = false;
 
   constructor(private readonly userService: UserService, private readonly router: Router){
     this.registerForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-      name: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.minLength(2)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.minLength(2)]),
-      password: new FormControl('', [Validators.required, Validators.pattern(this.strongPasswordRegx)]),
-      confirmPassword: new FormControl ('', [Validators.required])
+      email: new FormControl('email@email.pl', [Validators.required, Validators.maxLength(60)]),
+      name: new FormControl('Imię', [Validators.required, Validators.maxLength(30), Validators.minLength(2)]),
+      lastName: new FormControl('Nazwisko', [Validators.required, Validators.maxLength(30), Validators.minLength(2)]),
+      password: new FormControl('Password1!', [Validators.required, Validators.pattern(this.strongPasswordRegx)]),
+      confirmPassword: new FormControl ('Password1!', [Validators.required])
     },{
       validators: [ this.equivalentValidator('password', 'confirmPassword') ]
     })
