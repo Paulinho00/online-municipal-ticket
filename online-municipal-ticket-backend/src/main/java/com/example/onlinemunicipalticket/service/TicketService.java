@@ -52,6 +52,10 @@ public class TicketService {
     }
 
     public Optional<Long> buyTicket(long ticketId, UserData user, @Nullable Instant activeFrom) {
+        if (user == null) {
+            return Optional.empty();
+        }
+        
         return ticketRepository.findById(ticketId)
                 .map(ticket -> {
                     var instance = new TicketInstance(
@@ -68,7 +72,7 @@ public class TicketService {
                 }).orElse(Optional.empty());
     }
 
-    public boolean useTicket(long ticketInstanceId) {
+    public boolean useTicket(long ticketInstanceId, @Nullable String vehicleId) {
         return ticketInstanceRepository.findById(ticketInstanceId)
                 .map(instance -> {
                     if (instance.isUsed()) {
@@ -76,6 +80,14 @@ public class TicketService {
                     }
 
                     instance.setActivationTimestamp(Instant.now());
+
+                    if(instance.getTicket().getTicketType() == TicketType.DISPOSABLE) {
+                        if(vehicleId == null) {
+                            return false;
+                        }
+                        instance.setVehicleId(vehicleId);
+                    }
+
                     ticketInstanceRepository.save(instance);
 
                     return true;

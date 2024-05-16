@@ -26,7 +26,6 @@ public class TicketInstance {
     @JoinColumn(
             name = "ticket_id",
             referencedColumnName = "id",
-            insertable = false,
             updatable = false
     )
     private Ticket ticket;
@@ -35,7 +34,6 @@ public class TicketInstance {
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id",
-            insertable = false,
             updatable = false
     )
     private UserData user;
