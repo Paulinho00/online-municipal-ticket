@@ -30,9 +30,9 @@
                 <!--dla okresowego-->
                 <div *ngIf="ticket.type.toString() == 'PERIODIC'">
                     <p class="card-text fw-bold">Data rozpoczęcia:</p>
-                    <p class="card-text">{{ticket.activationDate?.toLocaleString}}</p>
+                    <p class="card-text">{{ticket.activationDate ? formatDateString(ticket.activationDate) : ''}}</p>
                     <p class="card-text fw-bold">Data wygaśnięcia:</p>
-                    <p class="card-text">{{ticket.validUntil.toLocaleString}}</p>
+                    <p class="card-text">{{formatDateString(ticket.validUntil)}}</p>
                 </div>
             </div>
         </div>
