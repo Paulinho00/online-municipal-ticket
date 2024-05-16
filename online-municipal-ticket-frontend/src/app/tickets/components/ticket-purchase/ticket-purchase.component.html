@@ -4,7 +4,7 @@
         <select class="form-select form-select-lg mb-3" aria-label="Large select example" [(ngModel)]="selectedTicketModel">
             <option *ngFor="let ticketModel of this.availableTicketModels" [ngValue]="ticketModel">
                 Bilet {{ticketTypePipe.transform(ticketModel.type)}}
-                {{ ticketModel.durationInSeconds ? ' ' + (ticketModel.durationInSeconds / 60) + 'minutowy' : '' }}
+                {{ ticketModel.durationSeconds ? ' ' + (ticketModel.durationSeconds / 60) + ' minutowy' : '' }}
                 {{ ticketModel.isReduced ? '- ulgowy' : ''}}
             </option>
         </select>
