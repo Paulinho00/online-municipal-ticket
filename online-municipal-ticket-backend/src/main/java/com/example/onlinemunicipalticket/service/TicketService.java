@@ -72,7 +72,7 @@ public class TicketService {
                 }).orElse(Optional.empty());
     }
 
-    public boolean useTicket(long ticketInstanceId) {
+    public boolean useTicket(long ticketInstanceId, @Nullable String vehicleId) {
         return ticketInstanceRepository.findById(ticketInstanceId)
                 .map(instance -> {
                     if (instance.isUsed()) {
@@ -80,6 +80,14 @@ public class TicketService {
                     }
 
                     instance.setActivationTimestamp(Instant.now());
+
+                    if(instance.getTicket().getTicketType() == TicketType.DISPOSABLE) {
+                        if(vehicleId == null) {
+                            return false;
+                        }
+                        instance.setVehicleId(vehicleId);
+                    }
+
                     ticketInstanceRepository.save(instance);
 
                     return true;

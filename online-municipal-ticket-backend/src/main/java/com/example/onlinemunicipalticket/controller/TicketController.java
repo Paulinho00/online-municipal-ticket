@@ -103,7 +103,10 @@ public class TicketController {
     }
 
     @PostMapping("/use")
-    public ResponseEntity<String> use(@RequestParam long ticketInstanceId) {
-        return ticketService.useTicket(ticketInstanceId) ? ResponseEntity.ok().build() : ResponseEntity.status(404).body("Ticket to use not found!");
+    public ResponseEntity<String> use(
+            @RequestParam long ticketInstanceId,
+            @RequestBody(required = false) String vehicleId
+    ) {
+        return ticketService.useTicket(ticketInstanceId, vehicleId) ? ResponseEntity.ok().build() : ResponseEntity.status(404).body("Ticket to use not found!");
     }
 }
