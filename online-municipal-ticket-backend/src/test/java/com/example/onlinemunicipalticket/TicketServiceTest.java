@@ -432,7 +432,7 @@ public class TicketServiceTest {
 
         // when
         when(ticketInstanceRepository.findById(ticketInstanceId)).thenReturn(Optional.of(ticketInstance));
-        boolean result = ticketService.useTicket(ticketInstanceId);
+        boolean result = ticketService.useTicket(ticketInstanceId, null);
 
         // then
         assertTrue(result);
@@ -457,7 +457,7 @@ public class TicketServiceTest {
         
         // when
         when(ticketInstanceRepository.findById(ticketInstanceId)).thenReturn(Optional.of(usedTicketInstance));
-        boolean result = ticketService.useTicket(ticketInstanceId);
+        boolean result = ticketService.useTicket(ticketInstanceId, null);
     
         // then
         assertFalse(result);
@@ -470,7 +470,7 @@ public class TicketServiceTest {
 
         // when
         when(ticketInstanceRepository.findById(nonExistingTicketInstanceId)).thenReturn(Optional.empty());
-        boolean result = ticketService.useTicket(nonExistingTicketInstanceId);
+        boolean result = ticketService.useTicket(nonExistingTicketInstanceId, null);
 
         // then
         assertFalse(result);
