@@ -1,16 +1,16 @@
 <ul class="nav justify-content-end py-3 navbar-expand-lg bg-dark-subtle border border-secondary-subtle">
     
-    <li *ngIf="userService.getUser();" class="nav-item">
+    <li *ngIf="userService.getUser() && userService.getUser()?.role?.toString() == 'PASSENGER'" class="nav-item">
         <a class="nav-link" [routerLink]="['ticket-purchase']">Kup bilet</a>
     </li>
-    <li *ngIf="userService.getUser();" class="nav-item">
+    <li *ngIf="userService.getUser() && userService.getUser()?.role?.toString() == 'TICKET_INSPECTOR'" class="nav-item">
         <a class="nav-link" href="#">Sprawdź bilet</a>
     </li>
     <li *ngIf="userService.getUser(); else loginBlock" class="nav-item">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{userService.getUser()?.name}}</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" [routerLink] = "['user-details']">Moje konto</a></li>
-          <li><a class="dropdown-item" [routerLink]="['ticket-list']">Moje bilety</a></li>
+          <li *ngIf="userService.getUser()?.role?.toString() == 'PASSENGER'"><a class="dropdown-item" [routerLink]="['ticket-list']">Moje bilety</a></li>
           <li><a class="dropdown-item" (click)="logOut()">Wyloguj</a></li>
         </ul>
     </li>

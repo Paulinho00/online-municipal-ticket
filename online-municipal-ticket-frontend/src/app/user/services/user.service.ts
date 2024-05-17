@@ -12,6 +12,8 @@ export class UserService {
   constructor(private readonly http: HttpClient) { }
 
   getUser(): User | null {
+    let xd = JSON.parse(localStorage.getItem('user') ?? "null") as User;
+    console.log(xd?.role?.toString())
     return JSON.parse(localStorage.getItem('user') ?? "null") as User;
   }
 
