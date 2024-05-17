@@ -27,7 +27,6 @@ export class TicketPurchaseComponent implements OnInit{
       .subscribe((response) => {
         this.availableTicketModels = response;
       })
-    console.log(this.availableTicketModels[0].durationSeconds)
     this.selectedTicketModel = this.availableTicketModels[0]
   }
 

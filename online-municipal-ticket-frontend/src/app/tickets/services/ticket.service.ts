@@ -22,6 +22,6 @@ export class TicketService {
   }
 
   buyTicket(ticketId: number, duration?: number): Observable<any> {  
-    return this.http.post(`${ticketApiPrefix}/buy?ticketId=${ticketId}`, duration);
+    return this.http.post(`${ticketApiPrefix}/buy?ticketId=${ticketId}`, duration ? duration : 0);
   }
 }
