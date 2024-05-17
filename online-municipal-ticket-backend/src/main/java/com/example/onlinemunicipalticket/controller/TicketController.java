@@ -82,9 +82,12 @@ public class TicketController {
     public ResponseEntity<Long> buy(
             @RequestHeader String token,
             @RequestParam long ticketId,
-            @RequestBody Long activeFrom,
+            @RequestBody(required = false) Long activeFrom,
             HttpServletRequest request
     ) {
+        if(activeFrom != null && Instant.now().isAfter(Instant.ofEpochSecond(activeFrom))) {
+            return ResponseEntity.status(400).build();
+        }
         var userData = userService.getLoggedUser(
                 new SessionData(token, request.getRemoteAddr())
         );
