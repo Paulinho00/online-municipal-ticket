@@ -44,8 +44,8 @@ public class TicketServiceTest {
     @Mock
     private TicketInstanceRepository ticketInstanceRepository;
 
-    @Mock
-    HttpServletRequest request;
+    // @Mock
+    // HttpServletRequest request;
 
     @InjectMocks
     private TicketService ticketService;
