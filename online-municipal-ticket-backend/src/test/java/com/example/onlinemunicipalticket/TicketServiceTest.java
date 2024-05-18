@@ -53,8 +53,6 @@ public class TicketServiceTest {
     @Test
     public void testCheckTicketPeriodicValid() {
         // given
-        String vehicleId = "123";
-
         UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
 
         Ticket ticket = new Ticket();
@@ -65,12 +63,11 @@ public class TicketServiceTest {
 
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
         ticketInstance.setPurchaseTimestamp(Instant.now());
-        ticketInstance.setVehicleId(vehicleId);
         ticketInstance.setActivationTimestamp(Instant.now());
 
         // when
         when(ticketInstanceRepository.findById(ticketInstance.getId())).thenReturn(Optional.of(ticketInstance));
-        boolean result = ticketService.checkTicket(ticketInstance.getId(), vehicleId);
+        boolean result = ticketService.checkTicket(ticketInstance.getId(), null);
 
         // then
         assertTrue(result);
@@ -79,8 +76,6 @@ public class TicketServiceTest {
     @Test
     public void testCheckTicketPeriodicInValid() {
         // given
-        String vehicleId = "123";
-
         UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
 
         Ticket ticket = new Ticket();
@@ -91,12 +86,11 @@ public class TicketServiceTest {
 
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
         ticketInstance.setPurchaseTimestamp(Instant.now().minusSeconds(25*3600L));
-        ticketInstance.setVehicleId(vehicleId);
         ticketInstance.setActivationTimestamp(Instant.now().minusSeconds(25*3600L));
 
         // when
         when(ticketInstanceRepository.findById(ticketInstance.getId())).thenReturn(Optional.of(ticketInstance));
-        boolean result = ticketService.checkTicket(ticketInstance.getId(), vehicleId);
+        boolean result = ticketService.checkTicket(ticketInstance.getId(), null);
 
         // then
         assertFalse(result);
@@ -105,8 +99,6 @@ public class TicketServiceTest {
     @Test
     public void testCheckTicketTimedValid() {
         // given
-        String vehicleId = "123";
-
         UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
 
         Ticket ticket = new Ticket();
@@ -117,12 +109,11 @@ public class TicketServiceTest {
 
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
         ticketInstance.setPurchaseTimestamp(Instant.now().minusSeconds(3700L));
-        ticketInstance.setVehicleId(vehicleId);
         ticketInstance.setActivationTimestamp(Instant.now().minusSeconds(900L));
 
         // when
         when(ticketInstanceRepository.findById(ticketInstance.getId())).thenReturn(Optional.of(ticketInstance));
-        boolean result = ticketService.checkTicket(ticketInstance.getId(), vehicleId);
+        boolean result = ticketService.checkTicket(ticketInstance.getId(), null);
 
         // then
         assertTrue(result);
@@ -131,8 +122,6 @@ public class TicketServiceTest {
     @Test
     public void testCheckTicketTimedInValid() {
         // given
-        String vehicleId = "123";
-
         UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
 
         Ticket ticket = new Ticket();
@@ -143,12 +132,11 @@ public class TicketServiceTest {
 
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
         ticketInstance.setPurchaseTimestamp(Instant.now().minusSeconds(4000L));
-        ticketInstance.setVehicleId(vehicleId);
         ticketInstance.setActivationTimestamp(Instant.now().minusSeconds(3700L));
 
         // when
         when(ticketInstanceRepository.findById(ticketInstance.getId())).thenReturn(Optional.of(ticketInstance));
-        boolean result = ticketService.checkTicket(ticketInstance.getId(), vehicleId);
+        boolean result = ticketService.checkTicket(ticketInstance.getId(), null);
 
         // then
         assertFalse(result);
@@ -195,7 +183,7 @@ public class TicketServiceTest {
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
         ticketInstance.setPurchaseTimestamp(Instant.now().minusSeconds(1800));
         ticketInstance.setActivationTimestamp(Instant.now().minusSeconds(1700));
-        ticketInstance.setVehicleId("123"); // Prawidłowy pojazd przypisany do biletu
+        ticketInstance.setVehicleId("123");
 
         // when
         when(ticketInstanceRepository.findById(ticketInstanceId)).thenReturn(Optional.of(ticketInstance));
@@ -326,33 +314,32 @@ public class TicketServiceTest {
         verify(ticketInstanceRepository, times(1)).save(ticketInstance);
     }
 
-    // @Test
-    // public void testBuyTicketDisposableSuccess() {
-    //     // given
-    //     UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
+    @Test
+    public void testBuyTicketDisposableSuccess() {
+        // given
+        UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
 
-    //     Ticket ticket = new Ticket();
-    //     ticket.setTicketType(TicketType.DISPOSABLE);
-    //     ticket.setPrice(BigDecimal.valueOf(3.00));
-    //     ticket.setReduced(false);
-    //     Long ticketId = 2L;
+        Ticket ticket = new Ticket();
+        ticket.setTicketType(TicketType.DISPOSABLE);
+        ticket.setPrice(BigDecimal.valueOf(3.00));
+        ticket.setReduced(false);
+        Long ticketId = 2L;
 
-    //     TicketInstance ticketInstance = new TicketInstance(user, ticket);
-    //     ticketInstance.setVehicleId("211");
+        TicketInstance ticketInstance = new TicketInstance(user, ticket);
 
-    //     // when
-    //     when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));
-    //     when(ticketInstanceRepository.save(any(TicketInstance.class))).thenAnswer(invocation -> {
-    //         TicketInstance savedInstance = invocation.getArgument(0);
-    //         return savedInstance;
-    //     });
+        // when
+        when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));
+        when(ticketInstanceRepository.save(any(TicketInstance.class))).thenAnswer(invocation -> {
+            TicketInstance savedInstance = invocation.getArgument(0);
+            return savedInstance;
+        });
 
-    //     Optional<Long> result = ticketService.buyTicket(ticketId, user, null);
+        Optional<Long> result = ticketService.buyTicket(ticketId, user, null);
 
-    //     // then
-    //     assertEquals(ticketInstance.getId(), result.orElse(null));
-    //     verify(ticketInstanceRepository, times(1)).save(ticketInstance);
-    // }
+        // then
+        assertEquals(ticketInstance.getId(), result.orElse(null));
+        verify(ticketInstanceRepository, times(1)).save(ticketInstance);
+    }
 
     @Test
     public void testBuyTicketTimedSuccess() {
@@ -422,17 +409,17 @@ public class TicketServiceTest {
         UserData user = new UserData("Michal", "Sikacki", "user11@email.com", "password11", UserRole.PASSENGER);
 
         Ticket ticket = new Ticket();
-        ticket.setTicketType(TicketType.TIMED);
-        ticket.setDurationSeconds(1800L);
-        ticket.setPrice(BigDecimal.valueOf(2.00));
+        ticket.setTicketType(TicketType.DISPOSABLE);
+        ticket.setPrice(BigDecimal.valueOf(5.00));
         ticket.setReduced(false);
 
         long ticketInstanceId = 1L;
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
+        ticketInstance.setVehicleId("123");
 
         // when
         when(ticketInstanceRepository.findById(ticketInstanceId)).thenReturn(Optional.of(ticketInstance));
-        boolean result = ticketService.useTicket(ticketInstanceId, null);
+        boolean result = ticketService.useTicket(ticketInstanceId, "123");
 
         // then
         assertTrue(result);
