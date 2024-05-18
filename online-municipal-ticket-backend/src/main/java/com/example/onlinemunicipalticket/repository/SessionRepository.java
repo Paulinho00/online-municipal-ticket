@@ -43,6 +43,10 @@ public class SessionRepository {
         cache.invalidate(sessionData);
     }
 
+    public boolean exists(SessionData sessionData) {
+        return cache.getIfPresent(sessionData) != null;
+    }
+
     public Long generateToken(String ipAddress) {
         var token = RANDOM.nextLong();
         while(cache.asMap().containsKey(new SessionData(token, ipAddress))) {

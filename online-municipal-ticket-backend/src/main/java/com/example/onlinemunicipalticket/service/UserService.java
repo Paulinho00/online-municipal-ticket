@@ -7,6 +7,7 @@ import com.example.onlinemunicipalticket.repository.UserRepository;
 import com.example.onlinemunicipalticket.service.dto.LoginReply;
 import com.example.onlinemunicipalticket.service.dto.RegistrationForm;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -41,6 +42,9 @@ public class UserService {
     }
 
     public void logout(SessionData sessionData) {
+        if (!sessionRepository.exists(sessionData)) {
+            throw new IllegalArgumentException("Session does not exist");
+        }
         sessionRepository.remove(sessionData);
     }
 
