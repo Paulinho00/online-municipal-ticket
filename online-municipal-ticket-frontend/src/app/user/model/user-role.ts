@@ -1,4 +1,4 @@
 export enum UserRole {
-    TicketInspector = "TicketInspector",
-    Passenger = "Passenger"
+    TicketInspector = "TICKET_INSPECTOR",
+    Passenger = "PASSENGER"
 }

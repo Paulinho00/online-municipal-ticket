@@ -1,28 +1,27 @@
-<div class="card mt-4">
 
-    <div class="card-body">
-        <div class="d-flex justify-content-center">
-            <nav  aria-label="...">
-                <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Poprzednia</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Następna</a>
-                </li>
-                </ul>
-            </nav>
-        </div>
-        <hr/>
-        <div class="d-flex flex-column">
-            <app-ticket-details></app-ticket-details>
-                <!--loop through ticket and display component with details-->  
-        </div>
-    </div>
+<div class="d-flex justify-content-center mt-2">
+    <nav  aria-label="...">
+        <ul class="pagination">
+        <li *ngIf="hasPreviousPage" class="page-item">
+            <a class="page-link" tabindex="-1" (click)="changePage(currentPage-1)">Poprzednia</a>
+        </li>
+        <li *ngIf="hasPreviousPage" class="page-item"><a class="page-link disabled">{{currentPage}}</a></li>
+        <li *ngIf="!isListEmpty" class="page-item active">
+            <a class="page-link">{{currentPage+1}}</a>
+        </li>
+        <li *ngIf="hasNextPage" class="page-item"><a class="page-link disabled">{{currentPage+2}}</a></li>
+        <li *ngIf="hasNextPage" class="page-item">
+            <a class="page-link" (click)="changePage(currentPage+1)">Następna</a>
+        </li>
+        </ul>
+    </nav>
+</div>
+
+<div *ngIf="isListEmpty" class="justify-content-center">
+    <h2>Brak biletów</h2>
+</div>
+
+<div class="d-flex flex-column" *ngFor="let ticket of tickets">
+    <app-ticket-details [ticket]="ticket"></app-ticket-details> 
 </div>
 
