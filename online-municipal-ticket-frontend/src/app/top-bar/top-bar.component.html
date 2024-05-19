@@ -4,7 +4,7 @@
         <a class="nav-link" [routerLink]="['ticket-purchase']">Kup bilet</a>
     </li>
     <li *ngIf="userService.getUser() && userService.getUser()?.role?.toString() == 'TICKET_INSPECTOR'" class="nav-item">
-        <a class="nav-link" href="#">Sprawdź bilet</a>
+        <a class="nav-link" [routerLink] = "['ticket-validator']">Sprawdź bilet</a>
     </li>
     <li *ngIf="userService.getUser(); else loginBlock" class="nav-item">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Witaj {{userService.getUser()?.name}}</a>
