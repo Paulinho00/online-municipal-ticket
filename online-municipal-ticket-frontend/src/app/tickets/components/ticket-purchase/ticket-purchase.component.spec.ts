@@ -52,7 +52,7 @@ describe('TicketPurchaseComponent', () => {
     expect(component.selectedTicketModel).toEqual(mockTicketModels[0]);
   });
 
-  it('should successfully complete transaction', () => {
+  it('should successfully complete transaction for timed ticket', () => {
     // given
     const mockResponse = { status: 200 };
     component.startDate = '2024-06-01T00:00:00';
@@ -64,6 +64,36 @@ describe('TicketPurchaseComponent', () => {
 
     // then
     expect(ticketServiceMock.buyTicket).toHaveBeenCalledWith(mockTicketModels[1].id, jasmine.any(Number));
+    expect(component.isTransactionSuccesful).toBeTrue();
+  });
+
+  it('should successfully complete transaction for disposable ticket', () => {
+    // given
+    const mockResponse = { status: 200 };
+    component.startDate = '2024-06-01T00:00:00';
+    component.selectedTicketModel = mockTicketModels[2];
+
+    // when
+    ticketServiceMock.buyTicket.and.returnValue(of(mockResponse));
+    component.onSubmit();
+
+    // then
+    expect(ticketServiceMock.buyTicket).toHaveBeenCalledWith(mockTicketModels[2].id, jasmine.any(Number));
+    expect(component.isTransactionSuccesful).toBeTrue();
+  });
+
+  it('should successfully complete transaction for periodic ticket', () => {
+    // given
+    const mockResponse = { status: 200 };
+    component.startDate = '2024-06-01T00:00:00';
+    component.selectedTicketModel = mockTicketModels[0];
+
+    // when
+    ticketServiceMock.buyTicket.and.returnValue(of(mockResponse));
+    component.onSubmit();
+
+    // then
+    expect(ticketServiceMock.buyTicket).toHaveBeenCalledWith(mockTicketModels[0].id, jasmine.any(Number));
     expect(component.isTransactionSuccesful).toBeTrue();
   });
 
