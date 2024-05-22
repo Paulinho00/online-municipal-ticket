@@ -12,19 +12,19 @@ export class UserService {
   constructor(private readonly http: HttpClient) { }
 
   getUser(): User | null {
-    return JSON.parse(localStorage.getItem('user') ?? "null") as User;
+    return JSON.parse(sessionStorage.getItem('user') ?? "null") as User;
   }
 
   getToken(): string {
-    return localStorage.getItem('user') ?? " ";
+    return sessionStorage.getItem('user') ?? " ";
   }
 
   login(loginData: LoginData): Observable<any> {
     return this.http.post<User>(authApiPrefix, loginData)
       .pipe(
         map(response => {
-          localStorage.setItem('user', JSON.stringify(response));
-          localStorage.setItem('token', response.token);
+          sessionStorage.setItem('user', JSON.stringify(response));
+          sessionStorage.setItem('token', response.token);
         })
       );  
   }
@@ -36,9 +36,9 @@ export class UserService {
   logout():Observable<any>{
     return this.http.post(`${authApiPrefix}/logout`, "")
       .pipe(
-        map(response => {
-          localStorage.removeItem('user');
-          localStorage.removeItem('token');
+        map(() => {
+          sessionStorage.removeItem('user');
+          sessionStorage.removeItem('token');
         })
       );
   }
