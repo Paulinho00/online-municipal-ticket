@@ -22,10 +22,10 @@ export class TicketService {
   }
 
   buyTicket(ticketId: number, duration?: number): Observable<any> {  
-    return this.http.post(`${ticketApiPrefix}/buy?ticketId=${ticketId}`, duration ? duration : 0);
+    return this.http.post(`${ticketApiPrefix}/buy?ticketId=${ticketId}`, duration ? duration : null);
   }
 
-  checkTicket(ticketId: number, vehicleId: number): Observable<boolean>{
-    return this.http.get<boolean>(`${ticketApiPrefix}/check?ticketInstanceId=${ticketId}&vehicleId=${vehicleId}`);
+  checkTicket(ticketId: number, vehicleId: number): Observable<number>{
+    return this.http.get<number>(`${ticketApiPrefix}/check?ticketInstanceId=${ticketId}&vehicleId=${vehicleId}`);
   }
 }

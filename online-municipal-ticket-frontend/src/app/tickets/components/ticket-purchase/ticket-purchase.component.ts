@@ -41,7 +41,7 @@ export class TicketPurchaseComponent implements OnInit{
 
     this.ticketService.buyTicket(selectedId, date.getTime() / 1000)
       .subscribe((response) => {
-        if(response.status == 200){
+        if(response.status != 401){
           this.isTransactionSuccesful = true;
         }
       })
