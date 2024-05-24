@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TicketService } from './ticket.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TicketService', () => {
   let service: TicketService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [TicketService]
+    }).compileComponents();
+
     service = TestBed.inject(TicketService);
   });
 
