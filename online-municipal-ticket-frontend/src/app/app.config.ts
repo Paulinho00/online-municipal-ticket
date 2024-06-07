@@ -11,7 +11,6 @@ import { TicketTypePipe } from './tickets/services/ticket-type-pipe';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideClientHydration(),
     provideHttpClient(withInterceptors([authInterceptor])),
     DatePipe,
     TicketTypePipe

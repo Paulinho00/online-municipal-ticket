@@ -11,17 +11,23 @@ import { UserRole } from '../../model/user-role';
   styleUrl: './user-details.component.scss'
 })
 export class UserDetailsComponent {
-  user: User;
-  userRole: string;
+  user!: User;
+  userRole!: string;
 
   constructor(private readonly userService: UserService) {
-    this.user = userService.getUser()!;
-    if(this.user.role == UserRole.Passenger){
-      this.userRole = "Pasażer";
-    }
-    else{
-      this.userRole = "Kontroler "
-    }
+    this.userService.currentUser.subscribe(res =>
+      {
+      if(res != undefined){
+        this.user = res
+        if(this.user.role == UserRole.Passenger){
+          this.userRole = "Pasażer";
+        }
+        else{
+          this.userRole = "Kontroler "
+        }
+      }
+    });
+
   }
 
 }
