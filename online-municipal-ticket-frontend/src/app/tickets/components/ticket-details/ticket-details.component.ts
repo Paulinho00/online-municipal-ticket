@@ -1,7 +1,7 @@
 import { Component, Input} from '@angular/core';
-import { Ticket } from '../../model/ticket';
 import { DatePipe, NgIf } from '@angular/common';
 import { TicketTypePipe } from '../../services/ticket-type-pipe';
+import { Ticket} from '../../../api/models';
 
 @Component({
   selector: 'app-ticket-details',

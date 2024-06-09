@@ -3,7 +3,7 @@ import { TicketType } from "../model/ticket-type";
 
 @Pipe({ name: 'ticketTypeLabel' })
 export class TicketTypePipe implements PipeTransform {
-  transform(value: TicketType): string {
+  transform(value: string): string {
     switch (value) {
       case TicketType.Timed:
         return 'Czasowy';

@@ -19,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/ticket")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor(onConstructor_ = @Autowired, access = AccessLevel.PACKAGE)
 public class TicketController {
 

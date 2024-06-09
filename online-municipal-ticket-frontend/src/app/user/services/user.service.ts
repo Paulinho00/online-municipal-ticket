@@ -1,43 +1,47 @@
 import { Injectable, signal } from '@angular/core';
-import { User } from '../model/user';
-import { LoginData } from '../model/login-data';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import { UserLoginControllerService } from '../../api/services';
+import { AuthRequest, LoginReply, RegistrationForm } from '../../api/models';
+import { Login$Params } from '../../api/fn/user-login-controller/login';
+import { Register$Params } from '../../api/fn/user-login-controller/register';
 
 const authApiPrefix = '/api/login'
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  currentUser = new BehaviorSubject<User | undefined>(this.getUser());
+  currentUser = new BehaviorSubject<LoginReply | undefined>(this.getUser());
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(
+    private readonly loginControllerService: UserLoginControllerService) { }
 
-  getUser(): User {
-    return JSON.parse(sessionStorage.getItem('user') ?? "null") as User;
+  getUser(): LoginReply {
+    return JSON.parse(sessionStorage.getItem('user') ?? "null") as LoginReply;
   }
 
   getToken(): string {
     return sessionStorage.getItem('user') ?? " ";
   }
 
-  login(loginData: LoginData): Observable<any> {
-    return this.http.post<User>(authApiPrefix, loginData)
+  login(loginData: AuthRequest): Observable<void> {
+
+    return this.loginControllerService.login({body: loginData})
       .pipe(
         map(response => {
           sessionStorage.setItem('user', JSON.stringify(response));
-          sessionStorage.setItem('token', response.token);
-          this.currentUser.next(response)
+          sessionStorage.setItem('token', response.token!);
+          this.currentUser.next(response);
         })
       );  
   }
 
-  register(user: User): Observable<any>{
-    return this.http.post(`${authApiPrefix}/register`, user, {responseType: 'text'});
+  register(user: RegistrationForm): Observable<any>{
+    return this.loginControllerService.register({body: user})
   }
 
   logout():Observable<any>{
-    return this.http.post(`${authApiPrefix}/logout`, "")
+    return this.loginControllerService.logout({token: this.getToken()})
       .pipe(
         map(() => {
           sessionStorage.removeItem('user');

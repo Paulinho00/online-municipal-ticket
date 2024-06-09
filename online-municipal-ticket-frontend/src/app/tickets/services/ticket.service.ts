@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TicketsPage } from '../model/tickets-page';
-import { TicketModel } from '../model/ticket-model';
+import { TicketControllerService } from '../../api/services';
+import { UserService } from '../../user/services/user.service';
+import { TicketModel, TicketPageReply } from '../../api/models';
 
 const ticketApiPrefix = '/api/ticket'
 
@@ -11,21 +11,23 @@ const ticketApiPrefix = '/api/ticket'
 })
 export class TicketService {
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly ticketControllerService: TicketControllerService,
+    private readonly userService: UserService
+   ) { }
 
-  getTickets(page: number, size:number = 10): Observable<TicketsPage>{
-    return this.http.get<TicketsPage>(`${ticketApiPrefix}/owned?page=${page}&size=${size}`);
+  getTickets(page: number, size:number = 10): Observable<TicketPageReply>{
+    return this.ticketControllerService.getOwnedTickets({token: this.userService.getToken(), page: page, size: size})
   }
 
   getTicketModels(): Observable<TicketModel[]>{
-    return this.http.get<TicketModel[]>(ticketApiPrefix);
+    return this.ticketControllerService.getTickets({token: this.userService.getToken()})
   }
 
   buyTicket(ticketId: number, duration?: number): Observable<any> {  
-    return this.http.post(`${ticketApiPrefix}/buy?ticketId=${ticketId}`, duration ? duration : null);
+    return this.ticketControllerService.buy({token: this.userService.getToken(), ticketId: ticketId, body: duration ? duration : undefined})
   }
 
-  checkTicket(ticketId: number, vehicleId: number): Observable<number>{
-    return this.http.get<number>(`${ticketApiPrefix}/check?ticketInstanceId=${ticketId}&vehicleId=${vehicleId}`);
+  checkTicket(ticketId: number, vehicleId: number): Observable<boolean>{
+    return this.ticketControllerService.check({token: this.userService.getToken(), ticketInstanceId: ticketId, vehicleId: vehicleId.toString()})
   }
 }
