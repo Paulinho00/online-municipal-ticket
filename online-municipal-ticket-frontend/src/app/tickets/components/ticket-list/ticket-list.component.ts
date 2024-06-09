@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketDetailsComponent } from '../ticket-details/ticket-details.component';
 import { TicketService } from '../../services/ticket.service';
-import { Ticket } from '../../model/ticket';
 import { NgFor, NgIf } from '@angular/common';
+import { Ticket } from '../../../api/models';
 
 const pageSize: number = 2
 
@@ -18,7 +18,7 @@ export class TicketListComponent implements OnInit{
     public hasNextPage: boolean = false
     public hasPreviousPage: boolean = false
     public isListEmpty: boolean = true;
-    public tickets: Ticket[] = []
+    public tickets: Ticket[] | undefined
 
     constructor(private readonly ticketService: TicketService) {}
 
@@ -33,7 +33,7 @@ export class TicketListComponent implements OnInit{
 
     private getTicketsForCurrentPage(): void{
       this.ticketService.getTickets(this.currentPage, pageSize).subscribe((response) => {
-        this.hasNextPage = response.totalPages > 0 && this.currentPage < response.totalPages-1;
+        this.hasNextPage = response.tickets!.length > 0 && this.currentPage < response.totalPages!-1;
         this.isListEmpty = response.totalPages == 0;
         this.hasPreviousPage = this.currentPage > 0;
         this.tickets = response.tickets;

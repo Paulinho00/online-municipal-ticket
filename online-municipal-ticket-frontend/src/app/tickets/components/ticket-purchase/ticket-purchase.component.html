@@ -3,12 +3,12 @@
     <div class="card-body">
         <select class="form-select form-select-lg mb-3" aria-label="Large select example" [(ngModel)]="selectedTicketModel">
             <option *ngFor="let ticketModel of this.availableTicketModels" [ngValue]="ticketModel">
-                Bilet {{ticketTypePipe.transform(ticketModel.type)}}
+                Bilet {{ticketTypePipe.transform(ticketModel.type!)}}
                 @if (ticketModel.durationSeconds) {
-                    @if(ticketModel.type.toString() == 'TIMED') {
+                    @if(ticketModel.type! == 'TIMED') {
                         {{' ' + (ticketModel.durationSeconds / 60) + ' minutowy'}}
                     }
-                    @if(ticketModel.type.toString() == 'PERIODIC') {
+                    @if(ticketModel.type! == 'PERIODIC') {
                         {{' ' + (ticketModel.durationSeconds / 60 /  60 / 24) + ' dniowy'}}
                     }
                 }
@@ -19,7 +19,7 @@
             <div class="container my-2 me-4">
                 <p class="card-text fs-5">Cena: {{selectedTicketModel.price}} zł</p>
             </div>
-            <div *ngIf="selectedTicketModel.type.toString() == 'PERIODIC'" class="container">
+            <div *ngIf="selectedTicketModel.type == 'PERIODIC'" class="container">
                 <div class="input-group my-2 me-4">
                     <label class="input-group-text" for="startDate">Data rozpoczęcia: </label>
                     <input type="datetime-local" id="startDate" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="startDate">

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService } from '../../services/ticket.service';
-import { TicketModel } from '../../model/ticket-model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { TicketType } from '../../model/ticket-type';
 import { TicketTypePipe } from '../../services/ticket-type-pipe';
+import { TicketModel } from '../../../api/models';
 
 @Component({
   selector: 'app-ticket-purchase',
@@ -39,7 +39,7 @@ export class TicketPurchaseComponent implements OnInit{
       return;
     }
 
-    this.ticketService.buyTicket(selectedId, date.getTime() / 1000)
+    this.ticketService.buyTicket(selectedId!, date.getTime() / 1000)
       .subscribe((response) => {
         if(response.status != 401){
           this.isTransactionSuccesful = true;

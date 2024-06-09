@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { User } from '../../model/user';
 import { UserRole } from '../../model/user-role';
+import { LoginReply } from '../../../api/models';
 
 @Component({
   selector: 'app-user-details',
@@ -11,7 +11,7 @@ import { UserRole } from '../../model/user-role';
   styleUrl: './user-details.component.scss'
 })
 export class UserDetailsComponent {
-  user!: User;
+  user!: LoginReply;
   userRole!: string;
 
   constructor(private readonly userService: UserService) {

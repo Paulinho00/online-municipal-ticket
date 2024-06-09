@@ -1,16 +1,16 @@
 <div class="card mt-4">
     <div class="card-body">
-        <h4 data-testid="ticket-header">Bilet {{this.ticketTypePipe.transform(ticket.type) }} {{ ticket.isDiscounted ? ' - ulgowy' : ''}}</h4>
+        <h4 data-testid="ticket-header">Bilet {{this.ticketTypePipe.transform(ticket.type!) }}</h4>
         <div class="d-flex flex-row mt-2">
             <div class="d-flex flex-column col-5">
                 <p class="card-text fw-bold">Kod:</p>
                 <p class="card-text">{{ticket.id}}</p>
                 <p class="card-text fw-bold">Data zakupu:</p>
-                <p class="card-text">{{formatDateString(ticket.purchaseDate)}}</p>
+                <p class="card-text">{{formatDateString(ticket.purchaseDate!)}}</p>
             </div>
             <div class="d-flex flex-column">
                 <!--dla jednorazowego-->
-                <div *ngIf="ticket.type.toString() == 'DISPOSABLE'">
+                <div *ngIf="ticket.type == 'DISPOSABLE'">
                     <p class="card-text fw-bold">Data skasowania:</p>
                     <p class="card-text" data-testid="activation-date-disposable"> {{ticket.activationDate ? formatDateString(ticket.activationDate) : 'nieskasowany'}}</p>
                     <p class="card-text fw-bold">Nr pojazdu:</p>
@@ -18,19 +18,19 @@
                 </div>
 
                 <!--dla czasowego-->
-                <div *ngIf="ticket.type.toString() == 'TIMED'">
+                <div *ngIf="ticket.type == 'TIMED'">
                     <p class="card-text fw-bold">Data skasowania:</p>
                     <p class="card-text" data-testid="activation-date-timed">{{ticket.activationDate ? formatDateString(ticket.activationDate) : 'nieskasowany'}}</p>
                     <p class="card-text fw-bold">Data wygaśnięcia:</p>
-                    <p class="card-text">{{ticket.validUntil ? formatDateString(ticket.validUntil) : 'nieskasowany'}}</p>
+                    <p class="card-text">{{ticket.expirationDate ? formatDateString(ticket.expirationDate) : 'nieskasowany'}}</p>
                 </div>
 
                 <!--dla okresowego-->
-                <div *ngIf="ticket.type.toString() == 'PERIODIC'">
+                <div *ngIf="ticket.type == 'PERIODIC'">
                     <p class="card-text fw-bold">Data rozpoczęcia:</p>
                     <p class="card-text" data-testid="activation-date-periodic">{{ticket.activationDate ? formatDateString(ticket.activationDate) : ''}}</p>
                     <p class="card-text fw-bold">Data wygaśnięcia:</p>
-                    <p class="card-text">{{formatDateString(ticket.validUntil)}}</p>
+                    <p class="card-text">{{formatDateString(ticket.expirationDate!)}}</p>
                 </div>
             </div>
         </div>
