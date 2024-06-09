@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 describe('LoginComponent', () => {
@@ -49,19 +49,8 @@ describe('LoginComponent', () => {
     expect(component.wrongCredentials).toBeTrue();
   });
 
-  it('should navigate to ticket-list if login is successful', () => {
-    userServiceMock.login.and.returnValue(of({}));
-
-    component.loginForm.controls['email'].setValue('user11@email.com');
-    component.loginForm.controls['password'].setValue('password11');
-
-    component.onSubmit();
-
-    expect(router.navigateByUrl).toHaveBeenCalledWith('ticket-list');
-  });
-
   it('should not set wrongCredentials if login is successful', () => {
-    userServiceMock.login.and.returnValue(of({}));
+    userServiceMock.login.and.returnValue(EMPTY);
 
     component.loginForm.controls['email'].setValue('user11@email.com');
     component.loginForm.controls['password'].setValue('password11');

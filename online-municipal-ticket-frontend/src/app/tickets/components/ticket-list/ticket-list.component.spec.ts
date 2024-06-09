@@ -15,16 +15,16 @@ describe('TicketListComponent', () => {
   const mockResponsePage1 = {
     totalPages: 2,
     tickets: [
-      { id: '1', type: TicketType.Periodic, isDiscounted: false, purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined },
-      { id: '2', type: TicketType.Timed, isDiscounted: true, purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined },
+      { id: 1, type: TicketType.Periodic, isDiscounted: false, purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined },
+      { id: 2, type: TicketType.Timed, isDiscounted: true, purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined },
     ]
   };
 
   const mockResponsePage2 = {
     totalPages: 2,
     tickets: [
-      { id: '3', type: TicketType.Disposable, isDiscounted: true, purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined },
-      { id: '4', type: TicketType.Periodic, isDiscounted: false, 
+      { id: 3, type: TicketType.Disposable, isDiscounted: true, purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined },
+      { id: 4, type: TicketType.Periodic, isDiscounted: false, 
       purchaseDate: '2024-05-19T14:00:00', activationDate: '', validUntil: '', vehicleId: undefined }
     ]
   };

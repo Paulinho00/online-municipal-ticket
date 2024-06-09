@@ -3,7 +3,7 @@ import { TicketPurchaseComponent } from './ticket-purchase.component';
 import { TicketService } from '../../services/ticket.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import { TicketModel } from '../../model/ticket-model';
+import { TicketModel } from '../../../api/models';
 import { TicketType } from '../../model/ticket-type';
 import { TicketTypePipe } from '../../services/ticket-type-pipe';
 
@@ -56,6 +56,10 @@ describe('TicketPurchaseComponent', () => {
     // given
     const mockResponse = { status: 200 };
     component.startDate = '2024-06-01T00:00:00';
+
+    const futureDate = new Date(Date.now() + 1000 * 60 * 60 * 24);
+    component.startDate = futureDate.toISOString();
+
     component.selectedTicketModel = mockTicketModels[1];
 
     // when

@@ -1,24 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserDetailsComponent } from './user-details.component';
 import { UserService } from '../../services/user.service';
-import { User } from '../../model/user';
 import { UserRole } from '../../model/user-role';
+import { LoginReply } from '../../../api/models';
+import { BehaviorSubject} from 'rxjs';
 
 describe('UserDetailsComponent', () => {
   let component: UserDetailsComponent;
   let fixture: ComponentFixture<UserDetailsComponent>;
-  let userServiceMock: Partial<UserService>;
+  let userServiceMock: jasmine.SpyObj<UserService>;
+
+  const mockLoginReply: LoginReply = {
+    email: 'user@email.com',
+    lastName: 'Sikacki',
+    name: 'Michal',
+    role: UserRole.Passenger,
+    token: '1111111111'
+  };
 
   beforeEach(async () => {
-    userServiceMock = {
-      getUser: jasmine.createSpy('getUser').and.returnValue({
-        name: 'Michal',
-        lastName: 'Sikacki',
-        email: 'user11@email.com',
-        token: '123456789',
-        role: UserRole.Passenger
-      } as User)
-    };
+    userServiceMock = jasmine.createSpyObj('UserService', ['getUser', 'logout']);
+
+    userServiceMock.currentUser = new BehaviorSubject<LoginReply | undefined>(mockLoginReply);
+
+    userServiceMock.currentUser.next(mockLoginReply);
 
     await TestBed.configureTestingModule({
       imports: [ UserDetailsComponent ],
@@ -43,8 +48,8 @@ describe('UserDetailsComponent', () => {
     expect(component.user).toEqual({
       name: 'Michal',
       lastName: 'Sikacki',
-      email: 'user11@email.com',
-      token: '123456789',
+      email: 'user@email.com',
+      token: '1111111111',
       role: UserRole.Passenger
     });
     expect(component.userRole).toBe('Pasażer');

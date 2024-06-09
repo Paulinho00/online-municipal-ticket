@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TicketDetailsComponent } from './ticket-details.component';
 import { DatePipe } from '@angular/common';
 import { TicketTypePipe } from '../../services/ticket-type-pipe';
-import { Ticket } from '../../model/ticket';
+import { Ticket } from '../../../api/models/ticket';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TicketType } from '../../model/ticket-type';
+import { TicketModel } from '../../../api/models';
 
 describe('TicketDetailsComponent', () => {
   let component: TicketDetailsComponent;
@@ -31,7 +32,7 @@ describe('TicketDetailsComponent', () => {
     component = fixture.componentInstance;
 
     component.ticket = {
-      id: "1",
+      id: 1,
       type: TicketType.Periodic,
       activationDate: '2024-05-01T00:00:00',
       validUntil: '2024-06-01T00:00:00',
@@ -62,12 +63,10 @@ describe('TicketDetailsComponent', () => {
   it('should set ticket input correctly', () => {
     // given
     const ticket: Ticket = {
-      id: "1",
+      id: 1,
       type: TicketType.Periodic,
       purchaseDate: '2024-05-01T00:00:00',
-      activationDate: '2024-05-01T00:00:00',
-      validUntil: '2024-06-01T00:00:00',
-      isDiscounted: false
+      activationDate: '2024-05-01T00:00:00'
     };
     component.ticket = ticket;
 
@@ -92,20 +91,19 @@ describe('TicketDetailsComponent', () => {
     expect(activationDateElement?.textContent).toContain('nieskasowany');
   });
 
-  it('should correctly display ticket type and discount', () => {
+  it('should correctly display ticket type', () => {
     // given
     const ticketTypeTransformed = 'Okresowy';
     ticketTypePipeMock.transform.and.returnValue(ticketTypeTransformed);
   
     // when
     component.ticket.type = TicketType.Periodic;
-    component.ticket.isDiscounted = true;
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const ticketHeader = compiled.querySelector('[data-testid="ticket-header"]') as HTMLElement;
   
     // then
     expect(ticketTypePipeMock.transform).toHaveBeenCalledWith(TicketType.Periodic);
-    expect(ticketHeader?.textContent).toContain(`Bilet ${ticketTypeTransformed}  - ulgowy`);
+    expect(ticketHeader?.textContent).toContain(`Bilet ${ticketTypeTransformed}`);
   });
 });
