@@ -113,8 +113,8 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+			<id>online-municipal-ticket-snapshots</id>
+			<url>http://localhost:8081/repository/online-municipal-ticket-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
