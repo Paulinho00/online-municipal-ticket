@@ -62,8 +62,8 @@ public class TicketServiceTest {
         ticket.setReduced(false);
 
         TicketInstance ticketInstance = new TicketInstance(user, ticket);
-        ticketInstance.setPurchaseTimestamp(Instant.now());
-        ticketInstance.setActivationTimestamp(Instant.now());
+        ticketInstance.setPurchaseTimestamp(Instant.now().minusSeconds(1));
+        ticketInstance.setActivationTimestamp(Instant.now().minusSeconds(1));
 
         // when
         when(ticketInstanceRepository.findById(ticketInstance.getId())).thenReturn(Optional.of(ticketInstance));
